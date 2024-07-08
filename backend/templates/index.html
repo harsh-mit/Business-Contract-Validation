@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Validation Tool</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .light-mode {
+            background-color: #ffffff;
+            color: #000000;
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .card {
+            margin-top: 20px;
+        }
+        .highlighted {
+            background-color: yellow;
+        }
+        .btn-primary, .btn-secondary, .btn-success, .btn-warning {
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover, .btn-secondary:hover, .btn-success:hover, .btn-warning:hover {
+            background-color: darken(#007bff, 10%);
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Contract Validation Tool</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#highlightSection">Highlight</a>
+                </li>
+            </ul>
+            <button class="btn btn-secondary ml-auto" id="theme-toggle">Dark Mode</button>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 class="text-center">Contract Validation Tool</h1>
+        <section id="highlightSection">
+            <form action="/highlight" method="post" enctype="multipart/form-data" class="mb-4">
+                <div class="form-group">
+                    <label for="contractText">Contract Text</label>
+                    <textarea id="contractText" name="contract_text" class="form-control" placeholder="Paste your contract text here" rows="10">{{ contract_text }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="contractFile">Contract File</label>
+                    <input type="file" id="contractFile" name="contract_file" class="form-control-file">
+                </div>
+                <button type="submit" class="btn btn-primary">Highlight Contract</button>
+            </form>
+        </section>
+
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
+        {% if highlighted_text %}
+            <h2>Highlighted Contract</h2>
+            <div class="card">
+                <div class="card-body">
+                    {{ highlighted_text|safe }}
+                </div>
+            </div>
+
+            <h2>Detected Entities</h2>
+            <ul class="list-group mb-4">
+                {% for entity in entities %}
+                    <li class="list-group-item">{{ entity.word }} - {{ entity.label }} - {{ entity.score }}</li>
+                {% endfor %}
+            </ul>
+
+            <div class="d-flex">
+                <form action="/download" method="post" class="mr-2">
+                    <input type="hidden" name="html_content" value="{{ highlighted_text }}">
+                    <button type="submit" class="btn btn-success">Download PDF</button>
+                </form>
+
+                <form action="/download_word" method="post">
+                    <input type="hidden" name="html_content" value="{{ highlighted_text }}">
+                    <button type="submit" class="btn btn-warning">Download Word</button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
