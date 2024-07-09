@@ -59,7 +59,7 @@ This project is a Streamlit application for highlighting contracts and performin
 2. **Open your web browser and go to `http://localhost:5000` to access the application.**
 
 ## Project Structure
-
+```
 Business-Contract-Validation/
 ├── backend/
 │   ├── app.py
@@ -82,4 +82,4 @@ Business-Contract-Validation/
 ├── .gitignore
 └── README.md
 
-
+```
