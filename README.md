@@ -60,7 +60,6 @@ This project is a Streamlit application for highlighting contracts and performin
 
 ## Project Structure
 
-```
 Business-Contract-Validation/
 ├── backend/
 │   ├── app.py
@@ -74,7 +73,13 @@ Business-Contract-Validation/
 │   │   │   └── script.js
 │   └── model/
 │       └── generate.py
+├── screenshots/
+│   ├── 1.png
+│   ├── 2.png
+│   ├── 3.png
+│   ├── 4.png
+│   ├── 5.png
 ├── .gitignore
 └── README.md
-```
+
 
